@@ -1,2 +1,3 @@
 # Sample
-Sample reposi
+Sample repository
+This is my first GIT demo
