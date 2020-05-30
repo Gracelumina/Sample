@@ -1,5 +1,3 @@
-import org.kohsuke.github.GitHub
-
 def PR = 0
 
 def create_pr = {
