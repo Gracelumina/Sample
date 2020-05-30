@@ -42,12 +42,7 @@ def merge_pr = {
 }
 
 pipeline {
-  agent {
-    label 'vetsgov-general-purpose'
-  }
-  options {
-    ansiColor('xterm')
-  }
+  agent any
   stages {
 
     stage('Create PR'){
