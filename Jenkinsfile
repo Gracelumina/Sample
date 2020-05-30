@@ -1,3 +1,8 @@
+import com.cloudbees.*;
+import hudson.*;
+import java.*;
+import jenkins.*;
+
 def PR = 0
 
 def create_pr = {
@@ -5,12 +10,12 @@ def create_pr = {
 
   def now = new Date().format('yyyy-MM-dd')
   def update_branch = "refs/heads/master"
-  def target_branch = 'refs/heads/production'
+  def target_branch = 'refs/heads/Test'
 
   def pr_title = "Automated merge to production branch for ${now}"
   def pr_body = 'Run from Jenkins'
 
-  def repo = github.getRepository('department-of-veterans-affairs/vets.gov-status')
+  def repo = github.getRepository('Gracelumina/Sample')
 
   def pr = repo.createPullRequest(pr_title, update_branch, target_branch, pr_body)
 
@@ -19,7 +24,7 @@ def create_pr = {
 
 def merge_pr = {
   def github = GitHub.connect()
-  def repo = github.getRepository('department-of-veterans-affairs/vets.gov-status')
+  def repo = github.getRepository('Gracelumina/Sample')
   def pr = repo.getPullRequest(PR)
 
   def is_mergeable = true
@@ -56,7 +61,7 @@ pipeline {
             sleep time: 2, unit: 'MINUTES'
             script {
               def github = GitHub.connect()
-              def repo = github.getRepository('department-of-veterans-affairs/vets.gov-status')
+              def repo = github.getRepository('Gracelumina/Sample')
               def pr = repo.getPullRequest(PR)
               // See comment in this stage in Jenkinsfile.update for more explanation of the below
               return (pr.getMergeable() != null &&
@@ -74,18 +79,6 @@ pipeline {
       steps {
         script { merge_pr() }
       }
-    }
-  }
-
-  post {
-    always {
-      deleteDir()
-    }
-    success {
-      echo "Automerge succeeded"
-    }
-    failure {
-      slackSend message: "<!here> Performance dashboard production automerge *FAILED*!", color: "danger", channel: "va-performance-dashboard-tech"
     }
   }
 }
